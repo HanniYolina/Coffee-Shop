@@ -1,0 +1,51 @@
+staff
+staff_id,first_name,last_name,position,start_date,location,,
+==== perlu specify ini staff di oulet mana, jadi bisa aja tambahin outlet_id disini
+
+
+dates
+transaction_date,Date_ID,Week_ID,Week_Desc,Month_ID,Month_Name,Quarter_ID,Quarter_Name,Year_ID
+==== walau data ini bisa di ambil dari query, tapi menurut saya tetap perlu ada untuk kemudahan dan mempersimple query pada report
+
+
+sales_outlet
+sales_outlet_id,sales_outlet_type,store_square_feet,store_address,store_city,store_state_province,store_telephone,store_postal_code,store_longitude,store_latitude,manager,Neighorhood
+==== karena manager nya datanya ada di staff, jadinya bisa check dari position dan outlet nya, tidak perlu ada manager lagi di sales outlet
+
+==== sales outlet diganti outlet
+
+product
+product_id,product_group,product_category,product_type,product,product_description,unit_of_measure,current_wholesale_price,current_retail_price,tax_exempt_yn,promo_yn,new_product_yn
+==== product_group,product_category,product_type, untuk ketiga kolom ini lebih baik disatukan dalam 1 table lain, misalkan product group
+==== unit_of_measure, lebih baik disatukan dalam 1 table lain, terdiri dari uom_id, product_group_id, uom_name, uom_size (jadi misalkan untuk product group beverages, jika uom_name nya "small", dan uom_size nya yang "8 oz" misalkan mau diubah jadi lebih mudah, tidak perlu semua product)
+
+==== new product, untuk yang ini, diganti dengan kolom created_at, karena bisa aja definisi new product bisa berubah, misalkan per month, per week etc
+==== promo_yn, untuk promo lebih baik buat 1 table sendiri yang menunjukkan product mana aja yang promo dan dari kapan sampai kapan promo berlangsung, karna mungkin 
+==== tax exempt juga sama seperti promo, karena definisi dan waktunya bisa berubah-ubah lebih baik dipisahkan
+
+==== product harusnya product name
+
+
+customer
+customer_id,"home_store","customer_first-name","customer_email","customer_since","loyalty_card_number","birthdate","gender","birth_year"
+==== untuk birth_year sebenarnya bisa juga langsung ambil dari birthdate aja, tetapi karena sudah ada table generation, untuk mempermudah join
+==== untuk customer_since diganti dengan join_date (tapi bisa juga pake created at)
+
+
+
+pastry inventory
+sales_outlet_id,transaction_date,product_id,start_of_day,quantity_sold,waste,% waste
+==== % waste ini sesuatu yang bisa dari perhitungan jadi bisa diilangin
+==== sebenarnya untuk quantity sold bisa dari transaction, tapi dengan adanya table ini bakal mempermudah
+
+sales receipt
+transaction_id,"transaction_date","transaction_time","sales_outlet_id","staff_id","customer_id","instore_yn","order","line_item_id","product_id","quantity","line_item_amount","unit_price","promo_item_yn"
+
+==== namanya di ganti transaction
+==== line item amount ini sejenis gmv, sebenarnya bisa perhitungan, tapi kalau biasanya penggunaan nya sering jadi tetap di table aja
+==== line item id ini pertama saya anggap sebagai item individual yang tercatat dalam transaksi, tapi jika pada contoh data terdapat id "1" dan "5" saja jadi agak ambigu. jika benar ini adalah item individual, maka lebih baik kita buat detail transaction
+
+
+sales target
+sales_outlet_id,year_month,beans_goal,beverage_goal,food_goal,merchandise _goal,total_goal
+==== total_goal ini sesuatu yang bisa dari perhitungan jadi bisa diilangin
